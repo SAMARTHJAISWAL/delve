@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Renders the social preview image (web/og.png): `delve` title over a game
+     the bot has played for a fixed number of moves. Serve _site/ and open
+     og.html?steps=N in a 1200x630 window. Not deployed. -->
+<meta charset="utf-8">
+<style>
+  body { margin: 0; width: 1200px; height: 630px; background: #0f0e13; color: #e1e1e6;
+         font-family: ui-monospace, "SF Mono", Menlo, monospace; overflow: hidden; }
+  header { display: flex; align-items: baseline; gap: 22px; padding: 26px 34px 14px; }
+  h1 { margin: 0; font-size: 54px; }
+  h1 span { color: #f5c850; }
+  p { margin: 0; font: 22px -apple-system, "Segoe UI", sans-serif; color: #a19ca9; }
+  canvas { display: block; margin: 0 34px; width: 1132px; border: 1px solid #2a2733; border-radius: 10px; }
+</style>
+<header><h1><span>@</span> delve</h1><p>Play any GitHub repo as a roguelike. Functions are monsters.</p></header>
+<canvas id="c"></canvas>
+<script type="module">
+  const which = new URLSearchParams(location.search).get("sample") || "sample.js";
+  const { sample } = await import(`./${which}`);
+  const PALETTE = [null, "#6e6e78", "#5f5a6e", "#464650", "#ffffff", "#eb5f55", "#78d278", "#dcb45a",
+    "#6e96f5", "#c88cff", "#6ec8dc", "#e1e1e6", "#ff466e", "#1e1e28", "#f5c850"];
+  const { instance } = await WebAssembly.instantiate(await (await fetch("delve.wasm")).arrayBuffer(), {});
+  const w = instance.exports;
+  const parts = [sample.name, ...sample.files.map(([p, t]) => `F\x1f${p}\x1f${t}`), ...sample.commits.map(([a, s]) => `C\x1f${a}\x1f${s}`)];
+  const bytes = new TextEncoder().encode(parts.join("\0"));
+  const ptr = w.input_buffer(bytes.length); // may grow memory: take the buffer after
+  new Uint8Array(w.memory.buffer, ptr, bytes.length).set(bytes);
+  const seed = Number(new URLSearchParams(location.search).get("seed") || 7);
+  w.start(0, seed);
+  const steps = Number(new URLSearchParams(location.search).get("steps") || 120);
+  for (let i = 0; i < steps && w.state() === 0; i++) w.bot_step();
+  if (new URLSearchParams(location.search).get("reveal")) w.reveal();
+  const W = w.width(), H = 24; // header, map and sidebar; the log is left out
+  const c = document.getElementById("c"), ctx = c.getContext("2d");
+  const cw = 11.8, ch = 19.6, scale = 2;
+  c.width = W * cw * scale; c.height = H * ch * scale; ctx.scale(scale, scale);
+  const chars = new Uint32Array(w.memory.buffer, w.chars(), W * 30);
+  const colors = new Uint8Array(w.memory.buffer, w.colors(), W * 60);
+  ctx.font = "16.5px ui-monospace, SF Mono, Menlo, monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  for (let i = 0; i < W * H; i++) {
+    const x = (i % W) * cw, y = Math.floor(i / W) * ch, bg = PALETTE[colors[i * 2 + 1]];
+    if (bg) { ctx.fillStyle = bg; ctx.fillRect(x, y, cw + 0.5, ch + 0.5); }
+  }
+  for (let i = 0; i < W * H; i++) {
+    const code = chars[i]; if (code === 32) continue;
+    const x = (i % W) * cw, y = Math.floor(i / W) * ch, s = String.fromCodePoint(code);
+    ctx.fillStyle = PALETTE[colors[i * 2]] || "#e1e1e6";
+    if (s === "█" || s === "░") { ctx.globalAlpha = s === "█" ? 1 : 0.35; ctx.fillRect(x, y + 2, cw, ch - 4); ctx.globalAlpha = 1; }
+    else ctx.fillText(s, x + cw / 2, y + ch / 2 + 1);
+  }
+  document.title = "ready";
+</script>

@@ -1,0 +1,9 @@
+[package]
+name = "delve-core"
+description = "Turn a codebase into a roguelike dungeon: the analysis, generator and game rules behind delve."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]

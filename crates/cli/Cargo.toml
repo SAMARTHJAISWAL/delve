@@ -1,0 +1,18 @@
+[package]
+name = "delve-dungeon"
+description = "Play any git repository as a roguelike: folders are floors, files are rooms, big functions are bosses."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../README.md"
+keywords = ["game", "roguelike", "git", "terminal", "codebase"]
+categories = ["games", "command-line-utilities"]
+
+[[bin]]
+name = "delve"
+path = "src/main.rs"
+
+[dependencies]
+delve-core = { path = "../core", version = "0.1.0" }
+crossterm = "0.29"
