@@ -105,7 +105,7 @@ The engine lives in [`crates/core`](crates/core) and has no dependencies.
 - **Deterministic.** The same repository and seed always build the same dungeon and play out the same way, so runs can be compared.
 - **One engine, two front ends.**
   - The terminal version uses [crossterm](https://crates.io/crates/crossterm).
-  - The browser version is the same Rust compiled to a 250 KB WebAssembly module behind a tiny hand-written C interface (no wasm-bindgen).
+  - The browser version is the same Rust compiled to a 270 KB WebAssembly module behind a tiny hand-written C interface (no wasm-bindgen).
   - Both copy the same 96×30 grid of coloured characters to the screen, so they look the same.
 
 ### Is it fair?
