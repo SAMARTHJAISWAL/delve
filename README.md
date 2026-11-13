@@ -1,7 +1,7 @@
 # @ delve
 
 [![CI](https://github.com/SAMARTHJAISWAL/delve/actions/workflows/ci.yml/badge.svg)](https://github.com/SAMARTHJAISWAL/delve/actions/workflows/ci.yml)
-[![Play in your browser](https://img.shields.io/badge/play-in%20your%20browser-f5c850)](https://samarthjaiswal.github.io/delve/)
+[![Play in your browser](https://img.shields.io/badge/play-in%20your%20browser-f5c850)](https://delve-two.vercel.app/)
 [![Rust](https://img.shields.io/badge/Rust-WebAssembly-dea584?logo=rust)](https://www.rust-lang.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -16,10 +16,10 @@
 | `TODO` / `FIXME` / `XXX` / `HACK` / `BUG` comments | loot |
 | the people in `git log` | ghosts who whisper their real commit messages |
 
-**[▶ Play any public GitHub repo in your browser](https://samarthjaiswal.github.io/delve/)**
-There's nothing to install, and the code never leaves your browser.
+**[▶ Play any public GitHub repo in your browser](https://delve-two.vercel.app/)**
+There's nothing to install, and the code never leaves your browser. It is also mirrored on [GitHub Pages](https://samarthjaiswal.github.io/delve/).
 
-[![delve playing through the test folder of a Gleam project: rooms named after each test file, a quest to slay the 500-line function eager](web/og.png)](https://samarthjaiswal.github.io/delve/)
+[![delve playing through the test folder of a Gleam project: rooms named after each test file, a quest to slay the 500-line function eager](web/og.png)](https://delve-two.vercel.app/)
 
 ## Play your own code
 
@@ -121,7 +121,7 @@ Most of the bot's deaths are to the boss. Clear a few floors and level up first.
 
 ## In the browser
 
-[The web version](https://samarthjaiswal.github.io/delve/) asks GitHub's public API for the repository's file list and recent commits, then downloads up to 160 source files, spreading them across folders, straight from `raw.githubusercontent.com`.
+[The web version](https://delve-two.vercel.app/) asks GitHub's public API for the repository's file list and recent commits, then downloads up to 160 source files, spreading them across folders, straight from `raw.githubusercontent.com`.
 
 - **Rate limit.** GitHub allows 60 API requests an hour per network without signing in, and each repository takes three. delve's own code is bundled, so it always plays.
 - **Shareable links.** Add `?repo=owner/name` to share a dungeon. Add `&bot=1` to open it with the bot already playing.
