@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>delve — play any GitHub repo as a roguelike</title>
+  <meta name="description" content="Your codebase is a dungeon. Folders are floors, files are rooms, functions are monsters and the longest function is the boss. Paste any GitHub repo and play.">
+  <meta property="og:title" content="delve — play any GitHub repo as a roguelike">
+  <meta property="og:description" content="Folders are floors, files are rooms, functions are monsters. The longest function in the repo is the boss. TODOs are loot.">
+  <meta property="og:image" content="https://delve-two.vercel.app/og.png">
+  <meta property="og:url" content="https://delve-two.vercel.app/">
+  <link rel="canonical" href="https://delve-two.vercel.app/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23141218'/%3E%3Ctext x='16' y='24' font-family='monospace' font-size='24' font-weight='bold' text-anchor='middle' fill='%23f5c850'%3E@%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <h1><span class="at">@</span> delve</h1>
+    <p class="pitch">Your codebase is a dungeon. Folders are floors, files are rooms, functions are monsters, and the longest function in the repo is the boss.</p>
+    <form id="pick" class="pick" autocomplete="off">
+      <label class="field">
+        <span>github.com/</span>
+        <input id="repo" placeholder="owner/repo" spellcheck="false" aria-label="GitHub repository">
+      </label>
+      <button type="submit">Delve</button>
+    </form>
+    <div class="chips" id="chips"></div>
+    <p id="status" class="status" role="status"></p>
+  </header>
+
+  <main id="stage" class="stage" hidden>
+    <div class="toolbar">
+      <span class="hint">Click the game, then arrows or hjkl to move. Walk into monsters to fight.</span>
+      <button id="watch" type="button">Watch a bot play</button>
+    </div>
+    <div class="scroller"><canvas id="screen" tabindex="0" aria-label="The game"></canvas></div>
+    <div class="pad" id="pad" aria-label="Touch controls">
+      <button data-k="5">↖</button><button data-k="1">↑</button><button data-k="6">↗</button>
+      <button data-k="3">←</button><button data-k="9">·</button><button data-k="4">→</button>
+      <button data-k="7">↙</button><button data-k="2">↓</button><button data-k="8">↘</button>
+      <button data-k="10" class="wide">&gt; down</button><button data-k="11" class="wide">&lt; up</button>
+      <button data-k="31">map</button><button data-k="30">help</button>
+    </div>
+    <div id="share" class="share" hidden>
+      <p id="summary"></p>
+      <div class="share-actions">
+        <button id="copy">Copy</button>
+        <a id="post" target="_blank" rel="noopener">Post on X</a>
+        <button id="again">Delve again</button>
+      </div>
+    </div>
+  </main>
+
+  <section class="how">
+    <div>
+      <h2>The bestiary</h2>
+      <ul>
+        <li><b>Functions</b> are monsters. Longer functions hit harder: a Rust function is a crab, Python a serpent, JavaScript a goblin, TypeScript a troll, Go a gopher, Java an ogre.</li>
+        <li><b>The longest function</b> in the repository is the boss. Find its folder and slay it.</li>
+        <li><b>Comments are loot.</b> A <code>TODO</code> is a healing potion, a <code>FIXME</code> maps the floor, an <code>XXX</code> is a bomb and a <code>HACK</code> is a sword that works, somehow.</li>
+        <li><b>Committers are ghosts</b> that whisper their real commit messages.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Play your own code</h2>
+      <p>The terminal version reads every file of a local repository, including private ones:</p>
+      <pre>cargo install --git https://github.com/SAMARTHJAISWAL/delve delve-dungeon
+cd your-project
+delve</pre>
+      <p>The browser version reads up to 160 files of a public GitHub repo. Your code never leaves your browser.</p>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://github.com/SAMARTHJAISWAL/delve">github.com/SAMARTHJAISWAL/delve</a> · MIT · written in Rust, compiled to WebAssembly
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
