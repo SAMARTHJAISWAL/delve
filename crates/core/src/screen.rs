@@ -165,7 +165,6 @@ pub fn draw(game: &Game, overlay: Overlay, screen: &mut Screen) {
 }
 
 fn header(game: &Game, s: &mut Screen) {
-    s.fill_row(0, Color::Bar);
     let mut x = s.text(1, 0, "delve", Color::Gold, 5);
     x = s.text(x + 2, 0, &game.repo.name, Color::White, 30);
     let path = game.repo.dirs[game.dir].label();
@@ -173,9 +172,7 @@ fn header(game: &Game, s: &mut Screen) {
     s.text(x + 1, 0, path, Color::Cyan, 40);
     let depth = format!("floor {}", game.repo.dirs[game.dir].depth + 1);
     s.text(WIDTH - depth.len() - 1, 0, &depth, Color::Dim, 20);
-    for x in 0..WIDTH {
-        s.cells[x].bg = Color::Bar;
-    }
+    s.fill_row(0, Color::Bar);
 }
 
 fn map(game: &Game, s: &mut Screen) {
@@ -469,11 +466,8 @@ fn log(game: &Game, s: &mut Screen) {
         s.text(1, 24 + i, line, color, WIDTH - 2);
     }
     let keys = "arrows/hjkl move  bump attack  > down  < up  1-9 use  m map  ? help  q quit";
-    s.fill_row(HEIGHT - 1, Color::Bar);
     s.text(1, HEIGHT - 1, keys, Color::Dim, WIDTH - 2);
-    for x in 0..WIDTH {
-        s.cells[(HEIGHT - 1) * WIDTH + x].bg = Color::Bar;
-    }
+    s.fill_row(HEIGHT - 1, Color::Bar);
 }
 
 fn help(s: &mut Screen) {
